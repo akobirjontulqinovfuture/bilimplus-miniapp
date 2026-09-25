@@ -1,0 +1,196 @@
+<!doctype html><html lang="uz"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
+<title>Bilim Plus</title>
+<script src="https://telegram.org/js/telegram-web-app.js"></script>
+<style>
+:root{--bg:var(--tg-theme-bg-color,#f4f5fb);--card:var(--tg-theme-secondary-bg-color,#fff);--tx:var(--tg-theme-text-color,#15162b);--hint:var(--tg-theme-hint-color,#7b7f99);--acc:var(--tg-theme-button-color,#5b3de8)}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+body{margin:0;font-family:-apple-system,'SF Pro Text',Manrope,Inter,Roboto,sans-serif;background:var(--bg);color:var(--tx)}
+.hero{position:relative;margin:12px;border-radius:26px;padding:22px 20px 20px;color:#fff;overflow:hidden;
+ background:linear-gradient(125deg,#3b2cc9,#6a3de8 50%,#ff7a45);box-shadow:0 12px 30px rgba(91,61,232,.35);animation:rise .6s ease}
+.hero:before,.hero:after{content:"";position:absolute;border-radius:50%;background:rgba(255,255,255,.15)}
+.hero:before{width:220px;height:220px;right:-70px;top:-90px;animation:float 6s ease-in-out infinite}
+.hero:after{width:120px;height:120px;right:60px;bottom:-60px;animation:float 7s ease-in-out infinite reverse}
+.top{display:flex;justify-content:space-between;align-items:center}
+.logo{width:46px;height:46px;border-radius:14px;background:linear-gradient(135deg,#ffb347,#ff5f6d);display:flex;align-items:center;justify-content:center;font-weight:800}
+.lang{display:flex;background:rgba(255,255,255,.18);border-radius:12px;padding:3px;z-index:1}
+.lang button{border:0;background:none;color:#fff;font-weight:700;padding:6px 10px;border-radius:9px;font-size:13px}
+.lang button.on{background:#fff;color:#5b3de8}
+.hero h1{margin:16px 0 4px;font-size:30px;letter-spacing:-.5px}.hero p{margin:0;opacity:.9;font-size:15px}
+.stats{display:flex;gap:8px;margin-top:16px}.stat{flex:1;background:rgba(255,255,255,.16);border-radius:14px;padding:9px;text-align:center;font-size:12px}
+.stat b{display:block;font-size:18px}
+.demo{font-size:11px;opacity:.8;margin-top:10px}
+h2{margin:18px 16px 8px;font-size:19px}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;padding:0 12px}
+.cc{background:var(--card);border-radius:20px;padding:14px;box-shadow:0 4px 16px rgba(20,20,60,.06);animation:rise .5s ease both;position:relative;overflow:hidden}
+.cc:active{transform:scale(.97)}
+.ic{width:52px;height:52px;border-radius:16px;display:flex;align-items:center;justify-content:center;font-size:28px;margin-bottom:10px}
+.cc h3{margin:0 0 4px;font-size:15px;line-height:1.2}.cc .pr{font-weight:800;font-size:14px}.cc .sm{color:var(--hint);font-size:12px}
+.sheet{position:fixed;inset:0;background:var(--bg);transform:translateY(100%);transition:transform .35s cubic-bezier(.2,.8,.2,1);overflow:auto;z-index:5;padding-bottom:90px}
+.sheet.open{transform:none}
+.dh{margin:12px;border-radius:24px;padding:22px 18px;color:#fff}
+.dh .ic{background:rgba(255,255,255,.22);width:64px;height:64px;font-size:36px}
+.dh h2{margin:6px 0;color:#fff;font-size:24px}.back{border:0;background:rgba(255,255,255,.22);color:#fff;border-radius:12px;padding:7px 12px;font-weight:700;margin-bottom:10px}
+.info{margin:0 12px;background:var(--card);border-radius:20px;padding:6px 16px}
+.row{display:flex;justify-content:space-between;padding:11px 0;border-bottom:1px solid rgba(128,128,160,.15);font-size:14px;gap:10px}
+.row:last-child{border:0}.row span{color:var(--hint)}.row b{text-align:right}
+.desc{margin:12px 16px;line-height:1.5;font-size:15px}
+.form{margin:0 12px;background:var(--card);border-radius:20px;padding:16px}
+label{display:block;font-size:13px;color:var(--hint);margin:12px 0 6px;font-weight:600}label:first-child{margin-top:0}
+input,select{width:100%;padding:13px 14px;border-radius:14px;border:2px solid rgba(128,128,160,.2);background:var(--bg);color:var(--tx);font-size:16px;outline:none;transition:border .2s}
+input:focus,select:focus{border-color:var(--acc)}input.bad{border-color:#ef4444;animation:shake .3s}
+.slots{display:flex;flex-wrap:wrap;gap:8px}.slot{padding:10px 12px;border-radius:12px;border:2px solid rgba(128,128,160,.2);font-weight:700;font-size:14px}
+.slot.on{border-color:#22c55e;background:rgba(34,197,94,.12);color:#16a34a}
+.err{color:#ef4444;font-size:12px;min-height:14px;margin-top:4px}
+.btn{display:block;width:calc(100% - 24px);margin:14px 12px;border:0;border-radius:16px;padding:16px;font-size:16px;font-weight:800;color:#fff;background:linear-gradient(135deg,#22c55e,#16a34a);box-shadow:0 10px 24px rgba(34,197,94,.35)}
+.btn.blue{background:linear-gradient(135deg,#5b3de8,#3b82f6);box-shadow:0 10px 24px rgba(91,61,232,.3)}
+.note{margin:10px 16px;font-size:12px;color:var(--hint);text-align:center}
+.ok{position:fixed;inset:0;background:var(--bg);display:none;flex-direction:column;align-items:center;justify-content:center;text-align:center;z-index:9;padding:30px}
+.ok.show{display:flex}.check{width:110px;height:110px;border-radius:50%;background:linear-gradient(135deg,#22c55e,#16a34a);display:flex;align-items:center;justify-content:center;animation:pop .6s cubic-bezier(.2,1.6,.4,1);box-shadow:0 16px 40px rgba(34,197,94,.4)}
+.check svg{width:56px;stroke:#fff;stroke-width:5;fill:none;stroke-dasharray:60;stroke-dashoffset:60;animation:draw .5s .4s forwards}
+.ok h2{font-size:24px;margin:22px 0 8px}.ok p{color:var(--hint);margin:0 0 6px;line-height:1.5}
+.conf{position:fixed;top:-10px;width:9px;height:14px;border-radius:2px;animation:fall 2.2s linear forwards;z-index:10}
+@keyframes rise{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:none}}
+@keyframes float{50%{transform:translateY(14px)}}
+@keyframes pop{from{transform:scale(0)}to{transform:scale(1)}}
+@keyframes draw{to{stroke-dashoffset:0}}
+@keyframes shake{25%{transform:translateX(-5px)}75%{transform:translateX(5px)}}
+@keyframes fall{to{transform:translateY(110vh) rotate(720deg)}}
+</style></head><body>
+<div class="hero">
+ <div class="top"><div class="logo">BP</div><div class="lang"><button data-l="uz">UZ</button><button data-l="ru">RU</button></div></div>
+ <h1>Bilim Plus</h1><p data-t="tag"></p>
+ <div class="stats"><div class="stat"><b>8+</b><span data-t="s1"></span></div><div class="stat"><b>1200+</b><span data-t="s2"></span></div><div class="stat"><b>🎁</b><span data-t="s3"></span></div></div>
+ <div class="demo" data-t="demo"></div>
+</div>
+<button class="btn" id="heroCta" data-t="cta"></button>
+<h2 data-t="courses"></h2><div class="grid" id="grid"></div>
+<div class="note" data-t="demo"></div><div style="height:30px"></div>
+
+<div class="sheet" id="detail"></div>
+<div class="sheet" id="formSheet"></div>
+<div class="ok" id="ok"></div>
+
+<script>
+const tg = window.Telegram ? Telegram.WebApp : null;
+const P = new URLSearchParams(location.search);
+const SRC = P.get('src') || 'web';
+const I18N = {
+ uz:{tag:"Toshkentdagi zamonaviy o'quv markazi",s1:"yil tajriba",s2:"bitiruvchi",s3:"bepul dars",demo:"Demo: barcha ma'lumotlar namuna (sample)",
+  cta:"🎁 Bepul sinov darsiga yozilish",courses:"Kurslarimiz",month:"oy",perm:"/ oy",back:"← Orqaga",level:"Daraja",days:"Dars kunlari",time:"Vaqtlar",dur:"Davomiyligi",teacher:"O'qituvchi",price:"Narxi",
+  signup:"✅ Sinov darsiga yozilish",formT:"Bepul sinov darsi",course:"Kurs",slot:"Guruh vaqti",name:"Ismingiz",namePh:"Masalan: Aziz Karimov",phone:"Telefon",age:"Yosh (ixtiyoriy)",send:"✅ Arizani yuborish",
+  eName:"Ismni to'g'ri kiriting",ePhone:"+998 XX XXX XX XX formatida kiriting",eSlot:"Vaqtni tanlang",eAge:"3 dan 80 gacha",
+  okT:"Arizangiz yuborildi!",okP:"Menejerimiz tez orada siz bilan bog'lanadi. Bot chatida tasdiq xabarini ko'rasiz.",
+  menuT:"Deyarli tayyor!",menuP:"Yuborish uchun bot chatidagi «🚀 Ilovani ochish» tugmasidan foydalaning (menyudagi «Ilova» tugmasi ma'lumot yubora olmaydi). Yoki chatda /trial buyrug'ini bosing.",toChat:"Chatga qaytish",
+  webT:"Bu demo ilova",webP:"Ilova Telegram ichida ishlaydi: @bilimplus_demo_bot → «🚀 Ilovani ochish».",
+  d:{odd:"Du / Chor / Ju",even:"Se / Pay / Sha",weekdays:"Du–Ju",weekend:"Sha / Yak",daily:"Du–Sha"}},
+ ru:{tag:"Современный учебный центр в Ташкенте",s1:"лет опыта",s2:"выпускников",s3:"бесплатный урок",demo:"Демо: все данные — образец (sample)",
+  cta:"🎁 Записаться на бесплатный урок",courses:"Наши курсы",month:"мес.",perm:"/ мес.",back:"← Назад",level:"Уровень",days:"Дни занятий",time:"Время",dur:"Длительность",teacher:"Преподаватель",price:"Стоимость",
+  signup:"✅ Записаться на пробный урок",formT:"Бесплатный пробный урок",course:"Курс",slot:"Время группы",name:"Ваше имя",namePh:"Например: Азиз Каримов",phone:"Телефон",age:"Возраст (необязательно)",send:"✅ Отправить заявку",
+  eName:"Введите имя корректно",ePhone:"Формат: +998 XX XXX XX XX",eSlot:"Выберите время",eAge:"От 3 до 80",
+  okT:"Заявка отправлена!",okP:"Наш менеджер скоро свяжется с вами. Подтверждение придёт в чат бота.",
+  menuT:"Почти готово!",menuP:"Чтобы отправить, используйте кнопку «🚀 Открыть приложение» в чате бота (кнопка «Ilova» в меню не может передавать данные). Или нажмите /trial в чате.",toChat:"Вернуться в чат",
+  webT:"Это демо-приложение",webP:"Приложение работает внутри Telegram: @bilimplus_demo_bot → «🚀 Открыть приложение».",
+  d:{odd:"Пн / Ср / Пт",even:"Вт / Чт / Сб",weekdays:"Пн–Пт",weekend:"Сб / Вс",daily:"Пн–Сб"}}
+};
+const STYLE = [["IELTS","🎯","#ef4444,#f97316"],["General","🗣️","#3b82f6,#6366f1"],["Mat","📐","#8b5cf6,#d946ef"],["Rus","📖","#0ea5e9,#22d3ee"],["Python","💻","#10b981,#84cc16"],["Bolalar","🧸","#f59e0b,#f43f5e"]];
+const DESC = {
+ "IELTS Intensive":["IELTS'ga jadal tayyorlov: 4 ko'nikma bo'yicha strategiyalar, har hafta mock-test.","Интенсивная подготовка к IELTS: стратегии по 4 навыкам, еженедельные mock-тесты."],
+ "General English":["Kundalik hayot va ish uchun ingliz tili: so'zlashuv, grammatika, tinglash.","Английский для жизни и работы: разговор, грамматика, аудирование."],
+ "Matematika (DTM ga tayyorlov)":["Maktab dasturi va kirish testlariga tayyorgarlik, har oy test sinovi.","Школьная программа и подготовка к вступительным тестам, ежемесячные тесты."],
+ "Rus tili":["Rus tilida erkin so'zlashing: talaffuz, grammatika, muloqot.","Свободная речь на русском: произношение, грамматика, общение."],
+ "IT: Python dasturlash":["Noldan Python: algoritmlar, Telegram-bot va veb-loyihalar.","Python с нуля: алгоритмы, Telegram-боты и веб-проекты."],
+ "Bolalar uchun ingliz tili":["6–10 yoshli bolalar uchun o'yin va qo'shiqlar orqali ingliz tili.","Английский для детей 6–10 лет через игры и песни."]};
+let COURSES = [
+ [1,"IELTS Intensive","IELTS Intensive",750000,"odd",["09:00–11:00","15:00–17:00","18:30–20:30"],"Dilnoza Karimova (IELTS 8.0)",4,"Intermediate (B1) va undan yuqori","Intermediate (B1) и выше"],
+ [2,"General English","General English",450000,"even",["08:30–10:00","14:00–15:30","17:00–18:30"],"Jasur Tursunov",3,"A1–B2","A1–B2"],
+ [3,"Matematika (DTM ga tayyorlov)","Математика (подготовка к DTM)",400000,"odd",["10:00–11:30","16:00–17:30"],"Bahodir Rahimov",9,"7–11-sinf, abituriyentlar","7–11 класс, абитуриенты"],
+ [4,"Rus tili","Русский язык",380000,"even",["09:00–10:30","17:30–19:00"],"Yelena Petrova",6,"A1–B1","A1–B1"],
+ [5,"IT: Python dasturlash","IT: программирование на Python",600000,"even",["14:00–16:00","18:00–20:00"],"Sardor Aliyev",6,"Noldan (12 yoshdan)","С нуля (с 12 лет)"],
+ [6,"Bolalar uchun ingliz tili","Английский для детей",350000,"odd",["14:00–15:00","16:00–17:00"],"Malika Yusupova",8,"Starter (6–10 yosh)","Starter (6–10 лет)"]];
+try{ if(P.get('c')){ let b=P.get('c').replace(/-/g,'+').replace(/_/g,'/'); while(b.length%4)b+='=';
+  const bytes=Uint8Array.from(atob(b),c=>c.charCodeAt(0)); const d=JSON.parse(new TextDecoder().decode(bytes)); if(Array.isArray(d)&&d.length)COURSES=d; } }catch(e){}
+let L = localStorage.getItem('bp_lang') || P.get('lang') || ((tg&&tg.initDataUnsafe&&tg.initDataUnsafe.user&&(tg.initDataUnsafe.user.language_code||'').startsWith('ru'))?'ru':'uz');
+if(!I18N[L]) L='uz';
+const T=k=>I18N[L][k];
+const $=s=>document.querySelector(s);
+const hap=(t='light')=>{try{tg&&tg.HapticFeedback.impactOccurred(t)}catch(e){}};
+const esc=s=>String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const style=c=>STYLE.find(s=>c[1].includes(s[0]))||["","🎓","#5b3de8,#3b82f6"];
+const price=p=>p.toLocaleString('ru-RU').replace(/,/g,' ')+(L==='ru'?' сум':" so'm");
+const nm=c=>L==='ru'?c[2]:c[1];
+const desc=c=>(DESC[c[1]]||[])[L==='ru'?1:0]||(L==='ru'?`Курс «${c[2]}». Уровень: ${c[9]}.`:`«${c[1]}» kursi. Daraja: ${c[8]}.`);
+let current=null, chosenSlot=null;
+
+function render(){
+ document.documentElement.lang=L;
+ document.querySelectorAll('[data-t]').forEach(e=>e.textContent=T(e.dataset.t));
+ document.querySelectorAll('.lang button').forEach(b=>b.classList.toggle('on',b.dataset.l===L));
+ $('#grid').innerHTML=COURSES.map((c,i)=>{const s=style(c);return `<div class="cc" style="animation-delay:${i*60}ms" data-id="${c[0]}">
+  <div class="ic" style="background:linear-gradient(135deg,${s[2]})">${s[1]}</div><h3>${esc(nm(c))}</h3>
+  <div class="pr">${price(c[3])}</div><div class="sm">${T('perm')} · ${c[7]} ${T('month')}</div></div>`}).join('');
+ document.querySelectorAll('.cc').forEach(e=>e.onclick=()=>openDetail(+e.dataset.id));
+}
+function openDetail(id){
+ hap(); current=COURSES.find(c=>c[0]===id); const c=current,s=style(c);
+ $('#detail').innerHTML=`<div class="dh" style="background:linear-gradient(135deg,${s[2]})"><button class="back" onclick="closeAll()">${T('back')}</button>
+  <div class="ic">${s[1]}</div><h2>${esc(nm(c))}</h2><div>${price(c[3])} ${T('perm')}</div></div>
+  <div class="desc">${esc(desc(c))}</div><div class="info">
+  <div class="row"><span>${T('level')}</span><b>${esc(L==='ru'?c[9]:c[8])}</b></div>
+  <div class="row"><span>${T('days')}</span><b>${T('d')[c[4]]||c[4]}</b></div>
+  <div class="row"><span>${T('time')}</span><b>${c[5].join(', ')}</b></div>
+  <div class="row"><span>${T('dur')}</span><b>${c[7]} ${T('month')}</b></div>
+  <div class="row"><span>${T('teacher')}</span><b>${esc(c[6])}</b></div></div>
+  <button class="btn" onclick="openForm(${c[0]})">${T('signup')}</button><div class="note">${T('demo')}</div>`;
+ $('#detail').classList.add('open'); $('#detail').scrollTop=0; showBack(true);
+}
+function openForm(id){
+ hap('medium'); current=COURSES.find(c=>c[0]===id)||COURSES[0]; chosenSlot=null;
+ const u=tg&&tg.initDataUnsafe&&tg.initDataUnsafe.user;
+ $('#formSheet').innerHTML=`<div class="dh" style="background:linear-gradient(125deg,#3b2cc9,#6a3de8 50%,#ff7a45)"><button class="back" onclick="closeForm()">${T('back')}</button><h2>🎁 ${T('formT')}</h2></div>
+ <div class="form"><label>${T('course')}</label><select id="fc">${COURSES.map(c=>`<option value="${c[0]}" ${c[0]===current[0]?'selected':''}>${esc(nm(c))}</option>`).join('')}</select>
+ <label>${T('slot')}</label><div class="slots" id="slots"></div><div class="err" id="eslot"></div>
+ <label>${T('name')}</label><input id="fn" placeholder="${T('namePh')}" value="${esc(u?(u.first_name||''):'')}" maxlength="60"><div class="err" id="ename"></div>
+ <label>${T('phone')}</label><input id="fp" type="tel" inputmode="tel" placeholder="+998 90 123 45 67" value="+998 "><div class="err" id="ephone"></div>
+ <label>${T('age')}</label><input id="fa" type="number" inputmode="numeric" placeholder="17"><div class="err" id="eage"></div></div>
+ <button class="btn" id="sendBtn">${T('send')}</button><div class="note">${T('demo')}</div>`;
+ $('#fc').onchange=()=>{current=COURSES.find(c=>c[0]===+$('#fc').value);chosenSlot=null;slots();hap()};
+ $('#fp').oninput=fmtPhone; $('#sendBtn').onclick=submit; slots();
+ $('#formSheet').classList.add('open'); showBack(true);
+ if(tg){tg.MainButton.setParams({text:T('send'),color:'#16a34a',text_color:'#ffffff'});tg.MainButton.show();}
+}
+function slots(){const d=T('d')[current[4]]||'';$('#slots').innerHTML=current[5].map(s=>`<div class="slot" data-s="${s}">${d} · ${s}</div>`).join('');
+ document.querySelectorAll('.slot').forEach(e=>e.onclick=()=>{chosenSlot=e.dataset.s;document.querySelectorAll('.slot').forEach(x=>x.classList.toggle('on',x===e));$('#eslot').textContent='';hap('soft')});}
+function fmtPhone(){let d=$('#fp').value.replace(/\D/g,'');if(d.startsWith('998'))d=d.slice(3);d=d.slice(0,9);
+ const p=[d.slice(0,2),d.slice(2,5),d.slice(5,7),d.slice(7,9)].filter(Boolean);$('#fp').value='+998 '+p.join(' ');}
+const CODES=["20","33","50","55","61","62","65","66","67","69","70","71","72","73","74","75","76","77","78","79","87","88","90","91","93","94","95","97","98","99"];
+function validate(){let ok=true;const set=(id,el,msg)=>{$(id).textContent=msg||'';if(el)el.classList.toggle('bad',!!msg);if(msg)ok=false};
+ const name=$('#fn').value.trim().replace(/\s+/g,' ');
+ set('#ename',$('#fn'),(name.length<2||name.length>60||!/^[\p{L}\s'`ʻʼ‘’.\-]+$/u.test(name))?T('eName'):'');
+ const d=$('#fp').value.replace(/\D/g,'');set('#ephone',$('#fp'),(d.length!==12||!CODES.includes(d.slice(3,5)))?T('ePhone'):'');
+ set('#eslot',null,chosenSlot?'':T('eSlot'));
+ const a=$('#fa').value.trim();set('#eage',$('#fa'),(a&&!(+a>=3&&+a<=80&&/^\d+$/.test(a)))?T('eAge'):'');
+ return ok?{v:1,course_id:current[0],slot:chosenSlot,name,phone:'+'+d,age:a||null,lang:L}:null;}
+function submit(){const data=validate();
+ if(!data){try{tg&&tg.HapticFeedback.notificationOccurred('error')}catch(e){};return;}
+ const inTg=!!(tg&&tg.platform&&tg.platform!=='unknown');
+ if(inTg&&SRC==='kb'){try{tg.HapticFeedback.notificationOccurred('success')}catch(e){}
+   success(T('okT'),T('okP')); setTimeout(()=>tg.sendData(JSON.stringify(data)),1300); return;}
+ if(inTg){success(T('menuT'),T('menuP'),true);return;}
+ success(T('webT'),T('webP'));}
+function success(h,p,chatBtn){if(tg)tg.MainButton.hide();
+ $('#ok').innerHTML=`<div class="check"><svg viewBox="0 0 52 52"><path d="M14 27l8 8 16-17"/></svg></div><h2>${h}</h2><p>${p}</p>${chatBtn?`<button class="btn blue" onclick="tg.close()">${T('toChat')}</button>`:''}`;
+ $('#ok').classList.add('show');
+ const cols=['#22c55e','#5b3de8','#ff7a45','#f59e0b','#3b82f6','#ef4444'];
+ for(let i=0;i<40;i++){const c=document.createElement('div');c.className='conf';c.style.left=Math.random()*100+'vw';c.style.background=cols[i%6];c.style.animationDelay=Math.random()*.6+'s';document.body.appendChild(c);setTimeout(()=>c.remove(),3000);}}
+function closeForm(){$('#formSheet').classList.remove('open');if(tg)tg.MainButton.hide();if(!$('#detail').classList.contains('open'))showBack(false);hap();}
+function closeAll(){$('#detail').classList.remove('open');closeForm();showBack(false);}
+function showBack(v){try{if(tg){v?tg.BackButton.show():tg.BackButton.hide()}}catch(e){}}
+document.querySelectorAll('.lang button').forEach(b=>b.onclick=()=>{L=b.dataset.l;localStorage.setItem('bp_lang',L);render();hap();
+ if($('#detail').classList.contains('open')&&current)openDetail(current[0]);});
+$('#heroCta').onclick=()=>openForm(COURSES[0][0]);
+if(tg){tg.ready();tg.expand();try{tg.setHeaderColor('#3b2cc9')}catch(e){}
+ tg.MainButton.onClick(submit);
+ tg.BackButton.onClick(()=>{$('#formSheet').classList.contains('open')?closeForm():closeAll()});}
+render();
+</script></body></html>
