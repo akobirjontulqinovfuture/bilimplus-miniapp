@@ -5,6 +5,7 @@
 <style>
 :root{--bg:var(--tg-theme-bg-color,#f4f5fb);--card:var(--tg-theme-secondary-bg-color,#fff);--tx:var(--tg-theme-text-color,#15162b);--hint:var(--tg-theme-hint-color,#7b7f99);--acc:var(--tg-theme-button-color,#5b3de8)}
 *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+button,input,select{font-family:inherit}
 body{margin:0;font-family:-apple-system,'SF Pro Text',Manrope,Inter,Roboto,sans-serif;background:var(--bg);color:var(--tx)}
 .hero{position:relative;margin:12px;border-radius:26px;padding:22px 20px 20px;color:#fff;overflow:hidden;
  background:linear-gradient(125deg,#3b2cc9,#6a3de8 50%,#ff7a45);box-shadow:0 12px 30px rgba(91,61,232,.35);animation:rise .6s ease}
@@ -155,12 +156,13 @@ function openForm(id){
  <label>${T('age')}</label><input id="fa" type="number" inputmode="numeric" placeholder="17"><div class="err" id="eage"></div></div>
  <button class="btn" id="sendBtn">${T('send')}</button><div class="note">${T('demo')}</div>`;
  $('#fc').onchange=()=>{current=COURSES.find(c=>c[0]===+$('#fc').value);chosenSlot=null;slots();hap()};
- $('#fp').oninput=fmtPhone; $('#sendBtn').onclick=submit; slots();
+ $('#fp').oninput=()=>{fmtPhone();clr('#fp','#ephone')}; $('#fn').oninput=()=>clr('#fn','#ename'); $('#fa').oninput=()=>clr('#fa','#eage'); $('#sendBtn').onclick=submit; slots();
  $('#formSheet').classList.add('open'); showBack(true);
  if(tg){tg.MainButton.setParams({text:T('send'),color:'#16a34a',text_color:'#ffffff'});tg.MainButton.show();}
 }
 function slots(){const d=T('d')[current[4]]||'';$('#slots').innerHTML=current[5].map(s=>`<div class="slot" data-s="${s}">${d} · ${s}</div>`).join('');
  document.querySelectorAll('.slot').forEach(e=>e.onclick=()=>{chosenSlot=e.dataset.s;document.querySelectorAll('.slot').forEach(x=>x.classList.toggle('on',x===e));$('#eslot').textContent='';hap('soft')});}
+function clr(i,e){$(i).classList.remove('bad');$(e).textContent='';}
 function fmtPhone(){let d=$('#fp').value.replace(/\D/g,'');if(d.startsWith('998'))d=d.slice(3);d=d.slice(0,9);
  const p=[d.slice(0,2),d.slice(2,5),d.slice(5,7),d.slice(7,9)].filter(Boolean);$('#fp').value='+998 '+p.join(' ');}
 const CODES=["20","33","50","55","61","62","65","66","67","69","70","71","72","73","74","75","76","77","78","79","87","88","90","91","93","94","95","97","98","99"];
